@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ThemeSwap from "./components/ThemeSwap";
-import Providers from "../providers";
+import Providers from "@/providers/providers";
 import { notFound } from "next/navigation";
 import { ClerkProvider } from "@clerk/nextjs";
 
@@ -25,12 +25,14 @@ const RootLayout = async ({ children, params: { locale } }) => {
   }
 
   return (
-    <ClerkProvider>
-      <html lang={locale} suppressHydrationWarning>
+    <ClerkProvider
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+      <html lang={locale} suppressHydrationWarning={true}>
         <body>
           <Providers locale={locale} messages={messages}>
-            <Navbar></Navbar>
-            <ThemeSwap></ThemeSwap>
+            <Navbar>
+              <ThemeSwap></ThemeSwap>
+            </Navbar>
             <main className='container'>{children}</main>
             <Footer></Footer>
           </Providers>
